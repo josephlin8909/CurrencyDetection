@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Currency Detection App</string>
+
+    <string name="back_button">Back</string>
+    <string name="take_photo">O</string>
+    <string name="information">This is the app that the Fall 2022 VIP APPs Currency Detection Team built to
+        help the user interact with the server and the algorithms we have loaded
+        on it. The user can use the \"Take a Picture\" or \"Load an Image\" buttons
+        to send an image to the server and the server will process the image. Then,
+        the app will display whether the bill is Thai or Colombian, the denomination
+        of the bill, and the conversion to USD.\n\nTeam Members:\nAnvit Sinha\nDaniel Choi\nJoseph Lin\nSohee Kim\nKatherine Sandys\nKavin Sathishkumar\nLeng Lohanakakul
+    </string>
+    <string name="display_fact">
+        What currency the bill is
+    </string>
+    <string name="title">Currency Detection</string>
+    <string name="info_page">Info</string>
+    <string name="camera_page">Take a Picture</string>
+    <string name="load_image">Load Image</string>
+    <string name="Image_description">Picture taken of a bill</string>
+</resources>
