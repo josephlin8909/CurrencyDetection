@@ -266,6 +266,7 @@ def edge_detection(img: np.ndarray, sigma: int, conv_type: int = 0):
     # sigma: window size to perform gaussian blur on the image as part of the edge detection process
     # Output:
     # img_copy: the resultant image after performing the edge detection steps
+    from matplotlib import pyplot as plt
     img_copy = np.copy(img)
     img_copy = grey_scale(img_copy)
     img_copy = gaussian_smoothing(img_copy, sigma, conv_type)
@@ -277,20 +278,43 @@ def edge_detection(img: np.ndarray, sigma: int, conv_type: int = 0):
     return img_copy
 
 
-# Anvit Sinha 10/1/2022
-# Main function to test each function against the openCV library
+# Joseph Lin 1/30/2022
+# Main function to show plots of each step of edge detection
 # For testing purposes only; hidden from users who import the package
 def __main():
     from matplotlib.pyplot import imread
+    from matplotlib import pyplot as plt
 
-    img1 = imread('50_baht_inHand.jpg', 0)
-    __compare_against_cv(img1, 1)
-
-    img2 = imread('50_baht_test.jpg', 0)
-    __compare_against_cv(img2, 1)
-
-    img3 = imread('pesos_test.jpg', 0)
-    __compare_against_cv(img3, 2)
+    img1 = imread('iraqi10000ar_180.jpg', 0)
+    plt.subplot(121), plt.imshow(img1, cmap='gray')
+    plt.title("Original image"), plt.xticks([]), plt.yticks([])
+    plt.show()
+    img_copy = np.copy(img1)
+    img_copy = grey_scale(img_copy)
+    plt.subplot(121), plt.imshow(img_copy, cmap='gray')
+    plt.title("Grey scaling"), plt.xticks([]), plt.yticks([])
+    plt.show()
+    img_copy = gaussian_smoothing(img_copy, 1, 0)
+    plt.subplot(121), plt.imshow(img_copy, cmap='gray')
+    plt.title("Gaussian Smoothing"), plt.xticks([]), plt.yticks([])
+    plt.show()
+    img_copy, theta = gradient_calc(img_copy, 0)
+    plt.subplot(121), plt.imshow(img_copy, cmap='gray')
+    plt.title("Gradiet Calculation"), plt.xticks([]), plt.yticks([])
+    plt.show()
+    img_copy = non_max_suppression(img_copy, theta)
+    plt.subplot(121), plt.imshow(img_copy, cmap='gray')
+    plt.title("Non-max Suppression"), plt.xticks([]), plt.yticks([])
+    plt.show()
+    img_copy, weak, strong = double_threshold(img_copy)
+    plt.subplot(121), plt.imshow(img_copy, cmap='gray')
+    plt.title("Double Threshold"), plt.xticks([]), plt.yticks([])
+    plt.show()
+    img_copy = hysteresis(img_copy, weak, strong)
+    plt.subplot(121), plt.imshow(img_copy, cmap='gray')
+    plt.title("Canny Edge Detection"), plt.xticks([]), plt.yticks([])
+    plt.show()
+    #__compare_against_cv(img1, 1)
 
 
 # Anvit Sinha 10/1/2022
