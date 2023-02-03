@@ -9,6 +9,10 @@ def calc_exchange_rate(currency_in_type: int, currency_in_denom: int):
         currency_in = "COP"
     elif currency_in_type == 1:
         currency_in = "THB"
+    elif currency_in_type == 2:
+        currency_in = "AED"
+    elif currency_in_type == 3:
+        currency_in = "IQD"
     else:
         return 0
     money_in = currency_in_denom

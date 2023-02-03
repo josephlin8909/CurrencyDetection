@@ -65,7 +65,7 @@ def image_post():
 
     # Get the bill type and denomination
 
-    bill_type = 2  # initially set to neither value
+    bill_type = 4  # initially set to neither value
 
     if predict_output in [0, 1, 2, 3, 4]:
         bill_type = 1 # Bill is Thai
@@ -76,6 +76,10 @@ def image_post():
         bill_type_name = "Columbian Peso"
     elif bill_type == 1:
         bill_type_name = "Thai Baht"
+    elif bill_type == 2:
+        bill_type_name = "United Arab Emirates dirham"
+    elif bill_type == 3:
+        bill_type_name = "Iraqi Dinar"
     else:
         bill_type_name = "Unknown"
 
