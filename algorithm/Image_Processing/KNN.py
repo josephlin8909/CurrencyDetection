@@ -1,5 +1,3 @@
-from turtle import distance
-from types import new_class
 import matplotlib.pyplot as plt
 import math
 
@@ -17,7 +15,7 @@ denom_class = [0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
 # first four are the numbers of relation (0 to 100), last two are to make sure that
 # they are found in the bill image (true or false)
 # code returns 0 for thai, 1 for colombia and 2 for neither
-def KNN_fucntion(colombia_seal, thai_seal, colombia_denom, thai_denom, seal, denom):
+def KNN_fucntion_two(colombia_seal, thai_seal, colombia_denom, thai_denom, seal, denom):
     # find the closet point of all the classes, whichever is closer in distance it is said class
     distance_points_denom = []
     distance_points_seal = []
@@ -69,8 +67,30 @@ def KNN_fucntion(colombia_seal, thai_seal, colombia_denom, thai_denom, seal, den
             elif index_smallest_path_seal > index_smallest_path_denom:
                 return new_denom_class
             else:  # if the tie-breaker fails, return neither (2)
-                return 2
+                return 4
     elif seal:
         return new_seal_class
     elif denom:
         return new_denom_class
+
+
+# Katherine Sandys (Updated 2/6)
+# this function does k k-nearest neighbor
+# first four are the numbers of relation (0 to 100), last two are to make sure that
+# they are found in the bill image (true or false)
+# code returns 	0 for Thai
+            # 1 for Colombia
+            # 2 for UAE
+            # 3 for Iraq
+            # 4 Neither
+def KNN_function_four(): #these will be changed later
+    #4 classes
+    # top right Colombia
+    # top left Thai
+    # bottom right Iraq
+    # bottom left UAE
+    # 1.5 on each side of 0 line will be neither
+
+    #plot new point on graph
+    #calculate distance
+    #figure out which class to return 
