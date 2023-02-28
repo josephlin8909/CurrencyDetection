@@ -43,9 +43,9 @@ def image_cropping_mod(img):
         top = i[1] - 10
         right = i[0] + i[3] + 10
         bottom = i[1] + i[2] + 10
-        print(left, top, right, bottom)
+        # print(left, top, right, bottom)
         im1 = im.crop((left, top, right, bottom))
-        #im1.show()
+        # im1.show()
         # im1.save('shapes_crop.png')
         output.append(im1)
     
@@ -89,9 +89,9 @@ def image_cropping_same(img):
         top = i[1] - 10
         right = i[0] + i[3] + 10
         bottom = i[1] + i[2] + 10
-        print(left, top, right, bottom)
+        # print(left, top, right, bottom)
         im1 = im.crop((left, top, right, bottom))
-        #im1.show()
+        # im1.show()
         # im1.save('shapes_crop.png')
         #resize image back
         im.resize((width, height)) #resize image
