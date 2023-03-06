@@ -79,7 +79,7 @@ def image_post():
     elif bill_type == 2:
         bill_type_name = "United Arab Emirates dirham"
     elif bill_type == 3:
-        bill_type_name = "Iraqi Dinar"
+        bill_type_name = "Hong Kong Dollar"
     else:
         bill_type_name = "Unknown"
 

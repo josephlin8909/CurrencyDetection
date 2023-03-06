@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import math
 
 seal_x_2 = [0, 100, 80, 20, 0, 75, 25, 75, 10, 90, 32, 86, 13, 65, 34, 80]
@@ -88,13 +87,13 @@ def KNN_fucntion_two(colombia_seal, thai_seal, colombia_denom, thai_denom, seal,
 # code returns 	0 for Thai
             # 1 for Colombia
             # 2 for UAE
-            # 3 for Iraq
+            # 3 for Hong Kong
             # 4 Neither
 def KNN_function_four(colombia_seal, thai_seal, x_seal, y_seal, colombia_denom, thai_denom, x_denom, y_denom, seal, denom): #these will be changed later
     #4 classes
     # top right Colombia
     # top left Thai
-    # bottom right Iraq -> x
+    # bottom right Hong Kong -> x
     # bottom left UAE -> y
     # 1.5 on each side of 0 line will be neither
 

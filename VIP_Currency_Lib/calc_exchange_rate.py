@@ -3,6 +3,7 @@ import json
 
 
 # Daniel Choi and Sohee Kim (12/4/22) - API call to convert currency to USD
+#Katherine Sandys (3/5/2023) - Updated code
 def calc_exchange_rate(currency_in_type: int, currency_in_denom: int):
     # get currency the user is in
     if currency_in_type == 0:
@@ -12,7 +13,7 @@ def calc_exchange_rate(currency_in_type: int, currency_in_denom: int):
     elif currency_in_type == 2:
         currency_in = "AED"
     elif currency_in_type == 3:
-        currency_in = "IQD"
+        currency_in = "HKD"
     else:
         return 0
     money_in = currency_in_denom

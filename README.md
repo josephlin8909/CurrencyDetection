@@ -10,5 +10,5 @@
 	0 for Thai
 	1 for Colombia
 	2 for UAE
-	3 for Iraq
+	3 for Hong Kong
 	4 Neither
