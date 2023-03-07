@@ -1,10 +1,12 @@
 #%%
+import os 
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import pandas as pd
 import tensorflow as tf
-import os 
 from keras.models import Sequential 
 from tensorflow import keras
 from keras.layers import Dense, Conv2D, Flatten, MaxPool2D
@@ -12,7 +14,6 @@ from PIL import Image
 from sklearn.model_selection import train_test_split
 import random
 
-tf.config.list_physical_devices('GPU')
 #%%
 
 #%%
@@ -67,10 +68,13 @@ def load_hk_data(directory, getIndividual=None):
     for image_name in os.listdir(os.path.join(directory, image_class)):
       # open the image at the image file path
       image = cv2.imread(os.path.join(directory, image_class, image_name))
-      # resize the image
-      image = cv2.resize(image, (300, 225))
-      image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
+      image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+      gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+      image_canny = cv2.GaussianBlur(gray, (3,3), 0)
+      image_canny = cv2.Canny(image_canny, 10, 50)
+      image_canny = cv2.resize(image_canny, (300,300))
+      image = cv2.resize(image, (300,300))
+      image = image_canny
       # normalize the image
       image = np.array(image) / 255 
       if image_class == "10 dollars": # if the image belongs to 10 hk dollars
@@ -134,8 +138,12 @@ print(f"number of Thai testing images = {y_thai_test.shape[0]}")
 # Leng Lohanakakul 11/7/2022
 # Define a convolutional neural network that takes an input shape of 128x128x3
 cnn = Sequential() 
-cnn.add(Conv2D(32, kernel_size=3, activation='relu', input_shape=(225,300, 1), name='conv1'))
-cnn.add(Conv2D(64, kernel_size=3, activation='relu', name='conv2'))
+cnn.add(Conv2D(32, kernel_size=7, activation='relu', input_shape=(300,300,1), name='conv1'))
+cnn.add(Conv2D(32, kernel_size=6, activation='relu', name='conv2'))
+cnn.add(Conv2D(32, kernel_size=5, activation='relu', name='conv3'))
+cnn.add(MaxPool2D(pool_size=(4,4), name='pool1'))
+cnn.add(Conv2D(16, kernel_size=4, activation='relu', name='conv4'))
+cnn.add(Conv2D(16, kernel_size=3, activation='relu', name='conv5'))
 cnn.add(MaxPool2D(pool_size=(4,4), name='pool2'))
 cnn.add(Flatten(name='flat'))
 cnn.add(Dense(6, activation='softmax', name='output'))
@@ -154,7 +162,7 @@ cnn.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['
 #x_thai_train = tf.convert_to_tensor(x_thai_train, dtype = tf.int64)
 #y_thai_train = tf.convert_to_tensor(y_thai_train, dtype = tf.int64)
 
-n_epochs = 7
+n_epochs = 15
 training = cnn.fit(x_thai_train, y_thai_train, epochs=n_epochs)
 
 #save model to a file 
@@ -192,4 +200,30 @@ predict = cnn.predict(x_thai_test)
 score = cnn.evaluate(x_thai_test, y_thai_test) 
 print(f"Test accuracy of the neural network = {score[1] * 100} %")
 
+#%%
+
+#%%
+# Leng Lohanakakul 11/7/2022
+# This code block display an example of correctly and incorrectly classified images 
+
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(15,5), squeeze=False) 
+
+# show an example of correcly classified image
+for i in range(y_thai_test.shape[0]): 
+  j = random.randint(0,199) 
+  predicted = np.argmax(predict[j]) 
+  if hk_label_conversion(predicted) == hk_label_conversion(y_thai_test[j]): 
+    ax[0,0].imshow(np.squeeze(x_thai_test[j]), cmap="gray")
+    ax[0,0].set_title(f"classified output = {hk_label_conversion(predicted)} \n ground truth = {hk_label_conversion(y_thai_test[j])}") 
+    break
+
+# show an example of misclassified image
+for i in range(y_thai_test.shape[0]): 
+  j = random.randint(0,199) 
+  predicted = np.argmax(predict[j]) 
+  if hk_label_conversion(predicted) != hk_label_conversion(y_thai_test[j]): 
+    ax[0,1].imshow(np.squeeze(x_thai_test[j]), cmap="gray")
+    ax[0,1].set_title(f"classified output = {hk_label_conversion(predicted)} \n ground truth = {hk_label_conversion(y_thai_test[j])}")
+    plt.show() 
+    break
 #%%
