@@ -115,18 +115,16 @@ ax[0,0].plot(range(1,n_epochs+1), training.history['val_loss'])
 ax[0,0].set_title("losses")
 ax[0,0].set_xlabel('epoch') 
 ax[0,0].set_ylabel('losses')
-ax[0,0].set(ylim=(-0.2,1.2))
+ax[0,0].set(ylim=(-0.1,1.1))
 # plot the accuracy over n_epochs
 ax[0,1].plot(range(1,n_epochs+1), training.history['accuracy'])
 ax[0,1].plot(range(1,n_epochs+1), training.history['val_accuracy'])
 ax[0,1].set_title("accuracy")
 ax[0,1].set_xlabel('epoch') 
 ax[0,1].set_ylabel('accuracy')
-ax[0,1].set(ylim=(-0.2,1.2))
+ax[0,1].set(ylim=(-0.1,1.1))
 
 plt.show() 
-
-print("hello world", type(train_ds))
 
 predictions = model.predict(val_ds)
 
