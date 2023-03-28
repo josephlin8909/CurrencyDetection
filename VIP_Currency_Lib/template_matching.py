@@ -75,7 +75,10 @@ def match_template(img: np.ndarray, max_value=False):
 
     # to crop to the thai seal
     seal_thai = cv.imread('baht_seal.jpg', 0)
-    seal_thai = resize(seal_thai, (src_img.shape[0] // 6, src_img.shape[1] // 6))  # resize the seal based on the image
+    x_shape = src_img.shape[0] // 6
+    y_shape = src_img.shape[1] // 6
+    # resize the seal based on the image
+    seal_thai = resize(seal_thai, (x_shape, y_shape))
     seal_thai = convert(seal_thai, 0, 255, np.uint8)
 
     # to crop to the columbian seal
