@@ -20,7 +20,6 @@ def hello_world():
 
 
 # Daniel Choi - Function to receive post request from app, process the image, and return it back to the user
-# Katherine Sandys - Updated the code to work with 4 types
 @app.route('/post', methods=['POST'])
 def image_post():
     # base64 string is received and decoded into byte array
@@ -50,32 +49,28 @@ def image_post():
     # Pillow image converted to numpy array
     img = plt.imread("receivedImage.jpg", 0)
 
+    # Our team ran into some issues getting the template matching and kNN working together. Something that can be worked on for future teams.
+    # Canny Edge Detection image processing techniques are applied.
+    # processedImg1 = canny.edge_detection(img, 1)
+
+    # Template matching + kNN to classify bill
+    # thai, col = template_matching.match_template(processedImg1)
+    # classification = knn.knn_seal(col, thai)
+    # print("kNN + Template Match Classification:")
+    # print(classification)
+
     # Create a separate prediction using CNN
     predict_output = cnn.cnn_predict(img)
     print("CNN Classification:")
-
-    if predict_output: #need to eb columbian or thai
-        # Canny Edge Detection image processing techniques are applied.
-        processedImg1 = canny.edge_detection(img, 1)
-
-        # Template matching + kNN to classify bill
-        thai, col = template_matching.match_template(processedImg1)
-        classification = knn.knn_seal(col, thai)
-        print("kNN + Template Match Classification:")
-        print(classification)
 
     # Get the bill type and denomination
 
     bill_type = 4  # initially set to neither value
 
     if predict_output in [0, 1, 2, 3, 4]:
-        bill_type = 0 # Bill is Columbian
-    elif predict_output in [5, 6, 7, 8, 9]:
         bill_type = 1 # Bill is Thai
-    elif predict_output in [10, 11, 12, 13, 14]:
-        bill_type = 2 # Bill is UAE
-    elif predict_output in [15, 16, 17, 18, 19]:
-        bill_type = 3  # Bill is Hong Kong
+    elif predict_output in [5, 6, 7, 8, 9]:
+        bill_type = 0 # Bill is Columbian
 
     if bill_type == 0:
         bill_type_name = "Columbian Peso"
@@ -105,10 +100,7 @@ def image_post():
     print(predict_output)
     print(bill_denomination)
 
-    if bill_denomination > 0:
-        bill_conversion = calc_exchange_rate.calc_exchange_rate(bill_type, bill_denomination)
-    else:
-        bill_conversion = "Unknown"
+    bill_conversion = calc_exchange_rate.calc_exchange_rate(bill_type, bill_denomination)
 
     print("sending back")
     print("Total Time: --- %s seconds ---" % (time.time() - start))
