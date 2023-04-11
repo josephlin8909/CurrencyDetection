@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
-
+# Joseph Lin 4/7/2023
+# This function takes original image and resize the image to a square image padded with white pixels
 
 def resize_with_padding(img, new_size):
     # get the dimensions of the original image
