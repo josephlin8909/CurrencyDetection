@@ -54,7 +54,8 @@ def image_post():
     predict_output = cnn.cnn_predict(img)
     print("CNN Classification:")
 
-    if predict_output: #need to eb columbian or thai
+    # need to be columbian or thai for this function to work right now
+    if predict_output in [0, 1, 2, 3, 4] or predict_output == [5, 6, 7, 8, 9]:
         # Canny Edge Detection image processing techniques are applied.
         processedImg1 = canny.edge_detection(img, 1)
 
