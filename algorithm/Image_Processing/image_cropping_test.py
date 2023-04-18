@@ -12,12 +12,12 @@ import numpy as np
 
 #Katherine Sandys
 def working():
-   img = cv2.imread('shapes_r.png')
+   img = cv2.imread('back_2.png')
    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
    ret,thresh = cv2.threshold(gray,50,255,0)
    contours,hierarchy = cv2.findContours(thresh, 1, 2)
-   print("Number of contours detected:", len(contours))
+   # print("Number of contours detected:", len(contours))
 
    # print(type(contours))
    # print(contours)
@@ -30,24 +30,46 @@ def working():
       if len(approx) == 4:
          x, y, w, h = cv2.boundingRect(cnt)
          ratio = float(w)/h
-         if not (ratio >= 0.9 and ratio <= 1.1):
+         if not (ratio >= 0.85 and ratio <= 1.25):
             #dont want sqaure only rectangles
             rectangles.append([x, y, h, w])
 
-   # print(rectangles)
-   im = Image.open(r"shapes_r.png")
+   print(type(rectangles))
+   #maybe try getting the average of all rectangles found if more than one is found?
+   # rectangle_average = int(sum(rectangles) / len(rectangles))
+   rectangle_average = [0, 0, 0, 0]
+   for x in rectangles:
+      rectangle_average[0] += x[0]
+      rectangle_average[1] += x[1]
+      rectangle_average[2] += x[2]
+      rectangle_average[3] += x[3]
+
+   rectangle_average[0] = int(rectangle_average[0] / len(rectangles)) 
+   rectangle_average[1] = int(rectangle_average[1] / len(rectangles))
+   print(rectangle_average)
+
+   im = Image.open(r"back_2.png")
    width, height = im.size #get the oringal image size for later
 
-   for i in rectangles: #list of all the rectangles in the image
-      #get coordinated for crop 
-      left = i[0] - 10
-      top = i[1] - 10
-      right = i[0] + i[3] + 10
-      bottom = i[1] + i[2] + 10
-      print(left, top, right, bottom)
-      im1 = im.crop((left, top, right, bottom))
-      im1.show()
-      im1.save('shapes_r_crop.png')
+   # for i in rectangles: #list of all the rectangles in the image
+   #    #get coordinated for crop 
+   #    left = i[0] - 10
+   #    top = i[1] - 10
+   #    right = i[0] + i[3] + 10
+   #    bottom = i[1] + i[2] + 10
+   #    # print(left, top, right, bottom)
+   #    im1 = im.crop((left, top, right, bottom))
+   #    # im1.show()
+   #    im1.save('back_2_crop.png')
+   #get coordinated for crop 
+   left = rectangle_average[0] - 10
+   top = rectangle_average[1] - 10
+   right = rectangle_average[0] + rectangle_average[3] + 10
+   bottom = rectangle_average[1] + rectangle_average[2] + 10
+   # print(left, top, right, bottom)
+   im1 = im.crop((left, top, right, bottom))
+   # im1.show()
+   im1.save('back_2_crop.png')
 
 working()
 

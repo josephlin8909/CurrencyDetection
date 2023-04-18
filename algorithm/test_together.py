@@ -6,21 +6,29 @@ import sys
 from PIL import Image
 from matplotlib import pyplot as plt
 
-#need to add the path for the folder
-# sys.path.insert(0, "/CurrencyDetection_S23/VIP_Currency_Lib")
-sys.path.insert(0, "C:/Users/pc/OneDrive - purdue.edu/Documents/GitHub/CurrencyDetection_S23/VIP_Currency_Lib")
+import numpy
 
-from VIP_Currency_Lib import calc_exchange_rate
-from VIP_Currency_Lib import cnn
-from VIP_Currency_Lib import canny
-from VIP_Currency_Lib import template_matching
-from VIP_Currency_Lib import knn
+#need to add the path for the folder
+sys.path.insert(1, "../VIP_Currency_Lib")
+# sys.path.insert(1, "C:/Users/pc/OneDrive - purdue.edu/Documents/GitHub/CurrencyDetection_S23/VIP_Currency_Lib")
+
+# from VIP_Currency_Lib import calc_exchange_rate
+# from VIP_Currency_Lib import cnn
+# from VIP_Currency_Lib import canny
+# from VIP_Currency_Lib import template_matching
+# from VIP_Currency_Lib import knn
+
+import calc_exchange_rate
+import cnn
+import canny
+import template_matching
+import knn
 
 #Katherine Sandys (3/6/2023
 # testing everything together, using old server code for not
 # this will be the server code once everything is put together
 
-image_file = "algorithm/Image_Processing/back_2_crop.png"
+image_file = "back_2.png"
 
 #get the image in a Pillow image
 receivedImg = Image.open(image_file)
@@ -39,10 +47,10 @@ receivedImg.save("receivedImage.jpg")
 print("saved!")
 
 # Pillow image converted to numpy array
-img = plt.imread("receivedImage.jpg", 0)
+img = plt.imread("receivedImage.jpg", "0")
 
 # Canny Edge Detection image processing techniques are applied.
-processedImg1 = canny.edge_detection(img, 1)
+processedImg1 = canny.edge_detection(img, 1) #sigma 1
 
 # Template matching + kNN to classify bill
 thai, col = template_matching.match_template(processedImg1)
