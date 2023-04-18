@@ -17,7 +17,7 @@ import math
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 print(tf.config.list_physical_devices('GPU'))
 
-#%% 
+#%% Leng Lohanakakul -> function that loads the dataset from the directory with separated denomination value
 def load_all_dataset(directory, train_size):  
     class_encoding = {} 
     imdata = [] 
@@ -43,57 +43,13 @@ def load_all_dataset(directory, train_size):
     img_train, img_test, lbl_train, lbl_test = train_test_split(imdata, imlabel, train_size=train_size)
     return class_encoding, np.array(img_train), np.array(lbl_train), np.array(img_test), np.array(lbl_test)
 
+# Leng Lohanakakul -> helper function to pre-process the image 
 def load_and_resize(directory, size):
-    
     image = cv2.imread(directory)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     image = resize_with_padding(image, size[0])
-    image = otsu_method(image)
-    # image = cv2.resize(image, size) # replace resize function
     return np.asarray(image) / 255 
 
-def otsu_method(img):
-
-    # Dictionary that stores all threshold values and their corresponding weighted within-class variance 
-    var_sum_dic = {}
-
-    # Initializes the resulting binary image
-    img_binary = np.zeros((img.shape[0], img.shape[1]))
-
-    # The total number of pixels of the grayscale image
-    pixels_all = img.size
-
-    for thresh in range(256):
-
-        # Calculates the weight of class 1 and class 2
-        pixels_class1 = np.count_nonzero(img <= thresh)
-        # Class 1 
-        weight1 = pixels_class1 / pixels_all
-        # Class 2
-        weight2 = 1 - weight1
-
-        # Calculates the variance of class 1 and class 2
-        # Pixels belong to class 1 and class 2
-        pixels1 = img[img <= thresh]
-        pixels2 = img[img > thresh]
-        # Variance of class 1 and class 2
-        var1 = np.var(pixels1)
-        var2 = np.var(pixels2)
-
-        # Weighted in-class variance
-        var_sum = weight1 * var1 + weight2 * var2
-
-        # Obtains the minimal weighted within-class variance
-        if not math.isnan(var_sum):
-            var_sum_dic[thresh] = var_sum
-            optimal_thresh = min(var_sum_dic, key=var_sum_dic.get)
-    
-    # The binary image
-    img_binary[img > optimal_thresh] = 255
-
-    # Displays the optimal threshold value
-    return(img_binary)
 
 # Joseph Lin 4/7/2023
 # This function takes original image and resize the image to a square image padded with white pixels
