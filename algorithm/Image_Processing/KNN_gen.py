@@ -14,7 +14,9 @@ print(y.tolist())
 classed = []
 
 for s in range(len(x)):
-    if x[s] > 0: #right
+    if abs(x[s]) < 2.5 or abs(y[s]) < 2.5:
+        classed.append(4) #neither
+    elif x[s] > 0: #right
         if y[s] > 0: #top
             classed.append(1)
         else: #bottom
@@ -28,5 +30,7 @@ for s in range(len(x)):
 print(classed) #the classes of each point
 
 plt.scatter(x, y, c=classed, s=10)
+plt.ylabel("Y")
+plt.xlabel("X")
 plt.show()
 

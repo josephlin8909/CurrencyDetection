@@ -55,7 +55,7 @@ def image_post():
     print("CNN Classification:")
 
     # need to be columbian or thai for this function to work right now
-    if predict_output in [0, 1, 2, 3, 4] or predict_output == [5, 6, 7, 8, 9]:
+    if predict_output in [0, 1, 2, 3, 4, 5, 12, 13, 14, 15, 16]:
         # Canny Edge Detection image processing techniques are applied.
         processedImg1 = canny.edge_detection(img, 1)
 
@@ -65,51 +65,51 @@ def image_post():
         print("kNN + Template Match Classification:")
         print(classification)
 
+
     # Get the bill type and denomination
+    # dict = {0: 'Colombian 10000 Pesos', 1: 'Colombian 100000 Pesos', 2: 'Colombian 2000 Pesos', 3: 'Colombian 20000 Pesos', 4: 'Colombian 5000 Pesos', 5: 'Colombian 50000 Pesos', 6: 'Hongkong 10 Dollar', 7: 'Hongkong 100 Dollar', 8: 'Hongkong 1000 Dollar', 9: 'Hongkong 20 Dollar', 10: 'Hongkong 50 Dollar', 11: 'Hongkong 500 Dollar', 12: 'Thai 100 Baht', 13: 'Thai 1000 Baht', 14: 'Thai 20 Baht', 15: 'Thai 50 Baht', 16: 'Thai 500 Baht', 17: 'UAE 10 Dirham', 18: 'UAE 100 Dirham', 19: 'UAE 20 Dirham', 20: 'UAE 200 Dirham', 21: 'UAE 5 Dirham', 22: 'UAE 50 Dirham', 23: 'UAE 500 Dirham'}
+    dict = {0: ['Colombian Pesos', 10000], 
+            1: ['Colombian Pesos', 100000],
+            2: ['Colombian Pesos', 2000],
+            3: ['Colombian Pesos', 20000],
+            4: ['Colombian Pesos', 5000],
+            5: ['Colombian Pesos', 50000],
+            6: ['Hongkong Dollar', 10],
+            7: ['Hongkong Dollar', 100],
+            8: ['Hongkong Dollar', 1000],
+            9: ['Hongkong Dollar', 20],
+            10: ['Hongkong Dollar', 50],
+            11: ['Hongkong Dollar', 500],
+            12: ['Thai Baht', 100],
+            13: ['Thai Baht', 1000],
+            14: ['Thai Baht', 20],
+            15: ['Thai Baht', 50],
+            16: ['Thai Baht', 500],
+            17: ['UAE Dirham', 10],
+            18: ['UAE Dirham', 100],
+            19: ['UAE Dirham', 20],
+            20: ['UAE Dirham', 200],
+            21: ['UAE Dirham', 5],
+            22: ['UAE Dirham', 50],
+            23: ['UAE Dirham', 500]}
 
-    bill_type = 4  # initially set to neither value
+    output_vals = dict[predict_output]
 
-    if predict_output in [0, 1, 2, 3, 4]:
-        bill_type = 0 # Bill is Columbian
-    elif predict_output in [5, 6, 7, 8, 9]:
-        bill_type = 1 # Bill is Thai
-    elif predict_output in [10, 11, 12, 13, 14]:
-        bill_type = 2 # Bill is UAE
-    elif predict_output in [15, 16, 17, 18, 19]:
-        bill_type = 3  # Bill is Hong Kong
+    print(output_vals)
+    bill_denomination = output_vals[1]
+    bill_type_name = output_vals[0]
 
-    if bill_type == 0:
-        bill_type_name = "Columbian Peso"
-    elif bill_type == 1:
-        bill_type_name = "Thai Baht"
-    elif bill_type == 2:
-        bill_type_name = "United Arab Emirates Dirham"
-    elif bill_type == 3:
-        bill_type_name = "Hong Kong Dollar"
-    else:
-        bill_type_name = "Unknown"
+    bill_type = -1
+    if bill_type_name == 'Colombian Pesos':
+        bill_type = 0
+    elif bill_type_name == 'Hongkong Dollar':
+        bill_type = 3
+    elif bill_type_name == 'Thai Baht':
+        bill_type = 1
+    elif bill_type_name == 'UAE Dirham':
+        bill_type = 2
 
-    # denomination initially set to impossible value
-    bill_denomination = -1
-
-    if predict_output == 0:
-        bill_denomination = 20
-    elif predict_output == 1:
-        bill_denomination = 50
-    elif predict_output == 2:
-        bill_denomination = 100
-    elif predict_output == 3:
-        bill_denomination = 500
-    elif predict_output == 4:
-        bill_denomination = 1000
-
-    print(predict_output)
-    print(bill_denomination)
-
-    if bill_denomination > 0:
-        bill_conversion = calc_exchange_rate.calc_exchange_rate(bill_type, bill_denomination)
-    else:
-        bill_conversion = "Unknown"
+    bill_conversion = calc_exchange_rate.calc_exchange_rate(bill_type, bill_denomination)
 
     print("sending back")
     print("Total Time: --- %s seconds ---" % (time.time() - start))
