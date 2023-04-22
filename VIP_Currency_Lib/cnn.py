@@ -1,7 +1,38 @@
 from keras.models import load_model
 from skimage.transform import resize
 import numpy as np
+import cv2
 
+# Joseph Lin 4/7/2023
+# This function takes original image and resize the image to a square image padded with white pixels
+def resize_with_padding(img, new_size):
+    # get the dimensions of the original image
+    height, width, _ = img.shape
+
+    # calculate the new height and width
+    if height > width:
+        # landscape orientation
+        new_width = int(width / height * new_size)
+        new_height = new_size
+    else:
+        # portrait orientation
+        new_width = new_size
+        new_height = int(new_size / width * height)
+
+    # resize the image while maintaining aspect ratio
+    resized_img = cv2.resize(img, (new_width, new_height))
+
+    # create a white square image of size new_size x new_size
+    square_img = 255 * np.ones(shape=[new_size, new_size, 3], dtype=np.uint8)
+
+    # calculate the x and y positions to place the resized image in the center of the square image
+    x = (new_size - new_width) // 2
+    y = (new_size - new_height) // 2
+
+    # place the resized image in the center of the square image
+    square_img[y:y+new_height, x:x+new_width] = resized_img
+
+    return square_img
 
 # Leng Lohanakakul 12/4/2022
 # This function takes a single image input and output a predicted currency
@@ -11,25 +42,17 @@ import numpy as np
 # returns a string of the predicted output
 def cnn_predict(image):
 
-    # Anvit Sinha 12/05/2022
+    # Anvit Sinha 12/05/2022, Edited: Leng Lohanakakul 
     # Added a check to see if the image is of the correct size
     # and resize if it is not
-    if image.shape != (128, 128, 3):
-        image = resize(image, (128, 128))
+    if image.shape != (256, 256, 3):
+        image = resize_with_padding(image, 256)
 
-    image_batch = np.expand_dims(image, axis=0)
-    cnn = load_model('model3.h5')
-    predictions = cnn.predict(image_batch)
+    image = np.expand_dims(image, axis=0)
+    cnn = load_model('S23_model.h5')
+    predictions = cnn.predict(image)
 
-    predicted_values = {}
-
-    for label, value in enumerate(predictions[0]):
-        if (label not in predicted_values):
-            predicted_values[label] = value
-        #if value == 1:
-        #    return label
-
-    return(max(predicted_values, key=predicted_values.get))
+    return(np.argmax(predictions))
 
 # Anvit Sinha 12/05/2022
 # Main function to test the functionality of the CNN model
