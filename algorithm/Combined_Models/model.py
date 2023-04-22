@@ -43,7 +43,7 @@ def load_all_dataset(directory, train_size):
                 imlabel.append(label)
     
     img_train, img_test, lbl_train, lbl_test = train_test_split(imdata, imlabel, training_size=train_size)
-    return np.array(img_train), np.array(lbl_train), np.arrary(img_test), np.array(lbl_test)
+    return np.array(img_train), np.array(lbl_train), np.arrary(img_test), np.array()
 
 def load_and_resize(directory, size):
     image = cv2.imread(directory)

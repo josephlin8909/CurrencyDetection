@@ -42,9 +42,6 @@ def resize_with_padding(img, new_size):
 # returns a string of the predicted output
 def cnn_predict(image):
 
-    # Anvit Sinha 12/05/2022, Edited: Leng Lohanakakul 
-    # Added a check to see if the image is of the correct size
-    # and resize if it is not
     if image.shape != (256, 256, 3):
         image = resize_with_padding(image, 256)
 
